@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>The Villas — Arpora Villas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:   #F5ECDB;
+    --cream-2: #EDE0C5;
+    --paper:   #FBF6EA;
+    --ink:     #221A14;
+    --muted:   #6B5E50;
+    --line:    #C9B58E;
+    --terra:   #B8553A;
+    --terra-2: #8E3E29;
+    --clay:    #D7A07C;
+    --palm:    #3F5A3D;
+    --palm-2:  #2A3D29;
+    --serif:   "Cormorant Garamond", Georgia, serif;
+    --sans:    "Outfit", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 140px; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans); color: var(--ink);
+    background: var(--cream);
+    font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { width: min(1320px, calc(100% - 48px)); margin-inline: auto; }
+
+  /* ---------- nav (matches index) ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--cream);
+    border-bottom: 1px solid rgba(34,26,20,0.08);
+  }
+  .topbar__inner {
+    display: grid; grid-template-columns: auto 1fr auto;
+    align-items: center; gap: 32px;
+    padding: 18px 0;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand__dot {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--terra); color: var(--paper);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-style: normal;
+    font-size: 22px; line-height: 1;
+  }
+  .brand__name { font-weight: 600; font-size: 18px; }
+  .brand__sub { font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted); margin-top: 1px; }
+  .nav { display: flex; gap: 30px; justify-content: center; }
+  .nav a { font-size: 14px; font-weight: 500; color: var(--ink); position: relative; padding: 6px 0; }
+  .nav a:hover { color: var(--terra); }
+  .nav a.is-active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: var(--terra); }
+  .topbar__cta {
+    background: var(--ink); color: var(--paper);
+    padding: 12px 22px; border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .topbar__cta::after {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: #6CC089;
+    box-shadow: 0 0 0 3px rgba(108,192,137,0.25);
+  }
+  .topbar__cta:hover { background: var(--terra); }
+
+  /* ---------- sub-nav ---------- */
+  .subnav {
+    position: sticky; top: 67px; z-index: 40;
+    background: rgba(245,236,219,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(34,26,20,0.08);
+  }
+  .subnav__inner {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 16px 0;
+  }
+  .subnav__lbl {
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 8px;
+  }
+  .subnav a {
+    padding: 9px 16px;
+    background: var(--paper);
+    border-radius: 999px;
+    font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: background .2s, color .2s;
+  }
+  .subnav a em {
+    font-family: var(--serif); font-style: normal; font-weight: 400;
+    color: var(--terra); font-size: 14px;
+  }
+  .subnav a:hover { background: var(--ink); color: var(--paper); }
+  .subnav a:hover em { color: var(--clay); }
+  .subnav__progress {
+    margin-left: auto;
+    font-family: var(--serif); font-style: normal;
+    color: var(--muted); font-size: 20px;
+    white-space: nowrap;
+  }
+
+  /* ---------- page header ---------- */
+  .phead { padding: 56px 0 32px; }
+  .phead__panel {
+    background: var(--ink); color: var(--paper);
+    border-radius: 28px;
+    padding: 56px 56px 48px;
+    display: grid; grid-template-columns: 1.3fr 1fr;
+    gap: 56px; align-items: end;
+  }
+  .phead__num {
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--clay); margin-bottom: 18px;
+    display: inline-flex; align-items: center; gap: 14px;
+  }
+  .phead__num::before { content: ""; width: 28px; height: 1px; background: var(--clay); }
+  .phead h1 {
+    font-weight: 600;
+    font-size: clamp(40px, 5.2vw, 76px);
+    line-height: 0.98; letter-spacing: -0.02em;
+    margin: 0;
+    max-width: 14ch; text-wrap: balance;
+  }
+  .phead h1 em { font-family: var(--serif); font-style: normal; font-weight: 400; color: var(--clay); }
+  .phead__meta { color: rgba(251,246,234,0.78); font-size: 15.5px; line-height: 1.7; max-width: 44ch; margin: 0; padding-bottom: 6px; }
+
+  /* ---------- villa block ---------- */
+  .villa { padding: 28px 0; }
+  .villa__panel {
+    background: var(--paper);
+    border-radius: 32px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 620px;
+  }
+  /* image right variant (reverse) */
+  .villa--reverse .villa__panel { grid-template-areas: "content media"; }
+  .villa--reverse .vmedia { grid-area: media; }
+  .villa--reverse .vcontent { grid-area: content; }
+
+  /* tonal variants per villa */
+  .villa--terra .villa__panel { background: var(--terra); color: var(--paper); }
+  .villa--palm  .villa__panel { background: var(--palm-2); color: var(--paper); }
+
+  /* media side */
+  .vmedia {
+    background-size: cover; background-position: center;
+    min-height: 560px;
+    position: relative;
+  }
+  .vmedia__badge {
+    position: absolute; top: 24px; left: 24px;
+    background: var(--paper); color: var(--ink);
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    font-weight: 500;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .vmedia__badge em {
+    font-family: var(--serif); font-style: normal; font-weight: 400;
+    color: var(--terra); font-size: 14px;
+  }
+
+  /* content side */
+  .vcontent {
+    padding: 52px 52px 48px;
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  .vcontent__lbl {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 18px;
+  }
+  .vcontent__lbl::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+  .villa--terra .vcontent__lbl,
+  .villa--palm  .vcontent__lbl { color: var(--clay); }
+
+  .vcontent h2 {
+    font-weight: 600;
+    font-size: clamp(40px, 4.6vw, 60px);
+    line-height: 0.98; letter-spacing: -0.018em;
+    margin: 0 0 6px;
+  }
+  .vcontent h2 em { font-family: var(--serif); font-style: normal; font-weight: 400; color: var(--terra); }
+  .villa--terra .vcontent h2 em,
+  .villa--palm  .vcontent h2 em { color: var(--clay); }
+
+  .vcontent__sub {
+    font-family: var(--serif); font-style: normal; font-weight: 400;
+    font-size: 22px;
+    color: var(--muted);
+    margin: 0 0 26px;
+  }
+  .villa--terra .vcontent__sub,
+  .villa--palm  .vcontent__sub { color: rgba(251,246,234,0.78); }
+
+  .vcontent__desc {
+    font-size: 16px; line-height: 1.7;
+    margin: 0 0 28px;
+    max-width: 52ch;
+  }
+  .villa--terra .vcontent__desc,
+  .villa--palm  .vcontent__desc { color: rgba(251,246,234,0.86); }
+
+  /* specs row */
+  .vspecs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 0 0 26px;
+  }
+  .vspecs > div {
+    background: var(--cream);
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .villa--terra .vspecs > div,
+  .villa--palm  .vspecs > div { background: rgba(251,246,234,0.1); }
+  .vspecs dt {
+    font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 4px;
+  }
+  .villa--terra .vspecs dt,
+  .villa--palm  .vspecs dt { color: var(--clay); }
+  .vspecs dd {
+    margin: 0;
+    font-weight: 600;
+    font-size: 18px;
+    display: inline-flex; align-items: baseline; gap: 4px;
+  }
+  .vspecs dd em {
+    font-family: var(--serif); font-style: normal; font-weight: 400;
+    color: var(--terra); font-size: 14px;
+  }
+  .villa--terra .vspecs dd em,
+  .villa--palm  .vspecs dd em { color: var(--clay); }
+
+  /* highlights — chip list 2 cols */
+  .vhilites { margin-bottom: 28px; }
+  .vhilites__h {
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 12px;
+  }
+  .villa--terra .vhilites__h,
+  .villa--palm  .vhilites__h { color: var(--clay); }
+  .vhilites__list {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .vhilites__list li {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .vhilites__list li::before {
+    content: "+";
+    color: var(--terra); font-weight: 600; font-size: 16px;
+  }
+  .villa--terra .vhilites__list li,
+  .villa--palm  .vhilites__list li { background: rgba(251,246,234,0.1); }
+  .villa--terra .vhilites__list li::before,
+  .villa--palm  .vhilites__list li::before { color: var(--clay); }
+
+  /* CTAs */
+  .vctas { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 22px;
+    border-radius: 999px;
+    font-size: 13px; font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .btn--primary { background: var(--ink); color: var(--paper); }
+  .btn--primary:hover { background: var(--terra); }
+  .btn--ghost { background: transparent; color: inherit; border-color: rgba(34,26,20,0.18); }
+  .btn--ghost:hover { border-color: var(--ink); }
+  .villa--terra .btn--primary,
+  .villa--palm  .btn--primary { background: var(--paper); color: var(--ink); }
+  .villa--terra .btn--primary:hover,
+  .villa--palm  .btn--primary:hover { background: var(--clay); }
+  .villa--terra .btn--ghost,
+  .villa--palm  .btn--ghost { border-color: rgba(251,246,234,0.4); }
+  .villa--terra .btn--ghost:hover,
+  .villa--palm  .btn--ghost:hover { border-color: var(--paper); }
+  .btn::after { content: "→"; }
+
+  /* ---------- closing CTA ---------- */
+  .closing {
+    margin: 40px 0 100px;
+    background: var(--palm-2); color: var(--paper);
+    border-radius: 32px;
+    padding: 56px 56px 52px;
+  }
+  .closing__inner {
+    display: grid; grid-template-columns: 1.3fr 1fr;
+    gap: 56px; align-items: center;
+  }
+  .closing__num {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 16px;
+  }
+  .closing__num::before { content: ""; width: 28px; height: 1px; background: var(--clay); }
+  .closing h2 {
+    font-weight: 600;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.02; letter-spacing: -0.018em;
+    margin: 0;
+  }
+  .closing h2 em { font-family: var(--serif); font-style: normal; font-weight: 400; color: var(--clay); }
+  .closing p { color: rgba(251,246,234,0.78); font-size: 15.5px; line-height: 1.7; max-width: 50ch; margin: 18px 0 28px; }
+  .closing__ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+  .closing .btn--primary { background: var(--clay); color: var(--ink); }
+  .closing .btn--primary:hover { background: var(--paper); }
+  .closing .btn--ghost { color: var(--paper); border-color: rgba(251,246,234,0.4); }
+
+  .closing__contacts {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(251,246,234,0.18);
+    border-radius: 20px;
+    padding: 24px 28px;
+    display: grid; gap: 4px;
+  }
+  .closing__contacts .row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 12px 0;
+    border-top: 1px solid rgba(251,246,234,0.12);
+  }
+  .closing__contacts .row:first-child { border-top: 0; }
+  .closing__contacts dt {
+    font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--clay);
+  }
+  .closing__contacts dd { margin: 0; font-weight: 500; font-size: 15.5px; }
+
+  /* ---------- footer ---------- */
+  footer {
+    background: var(--ink); color: rgba(251,246,234,0.7);
+    padding: 70px 0 30px;
+  }
+  .foot__grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(251,246,234,0.12);
+  }
+  .foot__brand-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .foot__dot {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--terra); color: var(--paper);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-style: normal;
+    font-size: 24px;
+  }
+  .foot__name { font-weight: 600; font-size: 22px; color: var(--paper); }
+  .foot p { max-width: 36ch; font-size: 14px; line-height: 1.6; }
+  .foot h4 {
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--clay); font-weight: 500;
+    margin: 6px 0 18px;
+  }
+  .foot ul { list-style: none; padding: 0; margin: 0; }
+  .foot ul li { margin-bottom: 10px; font-size: 14px; }
+  .foot ul a:hover { color: var(--clay); }
+  .foot__bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 24px;
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(251,246,234,0.45);
+  }
+
+  @media (max-width: 1000px) {
+    .nav { display: none; }
+    .phead__panel { grid-template-columns: 1fr; gap: 28px; padding: 36px; }
+    .villa__panel { grid-template-columns: 1fr; min-height: auto; }
+    .villa--reverse .villa__panel { grid-template-areas: "media" "content"; }
+    .vmedia { min-height: 380px; }
+    .vcontent { padding: 36px; }
+    .vspecs { grid-template-columns: 1fr 1fr; }
+    .closing { padding: 36px; }
+    .closing__inner { grid-template-columns: 1fr; gap: 28px; }
+    .foot__grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body data-screen-label="All Villas">
+
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <div class="brand">
+      <div class="brand__dot">A</div>
+      <div>
+        <div class="brand__name">Arpora Villas</div>
+        <div class="brand__sub">North Goa</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="villas.html" class="is-active">Villas</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="index.html#guest">Experience</a>
+      <a href="index.html#book">Contact</a>
+    </nav>
+    <a href="#enquire" class="topbar__cta">Book Now</a>
+  </div>
+</header>
+
+<section class="phead" data-screen-label="Villas · Header">
+  <div class="wrap">
+    <div class="phead__panel">
+      <div>
+        <span class="phead__num">05 · The Collection</span>
+        <h1>Four villas. Each <em>its own room</em> in North Goa.</h1>
+      </div>
+      <p class="phead__meta">Every villa is independent — three ensuite bedrooms, a private pool, and the same standard of housekeeping, concierge and 24/7 support. What changes between them is mood: Mandovi is elegant and balanced; Sal, modern and bright; Chapora, family-friendly and central; Zuari, designer and exclusive.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VILLA MANDOVI ===================== -->
+<section class="villa" id="mandovi" data-screen-label="Villa · Mandovi">
+  <div class="wrap">
+    <div class="villa__panel">
+      <div class="vmedia" style="background-image:url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=1600&q=80')">
+        <div class="vmedia__badge"><em>I.</em> Villa Mandovi</div>
+      </div>
+      <div class="vcontent">
+        <span class="vcontent__lbl">Villa I · Mandovi</span>
+        <h2>Villa <em>Mandovi</em></h2>
+        <p class="vcontent__sub">Elegant three-bedroom private-pool villa</p>
+        <p class="vcontent__desc">A beautifully composed villa, with spacious interiors, contemporary furnishings and a long private pool that catches afternoon light. Ideal for families and groups who measure a holiday by how unhurried it feels.</p>
+
+        <dl class="vspecs">
+          <div><dt>Bedrooms</dt><dd>3 <em>ensuite</em></dd></div>
+          <div><dt>Sleeps</dt><dd>6 <em>+ 2</em></dd></div>
+          <div><dt>Pool</dt><dd>Private</dd></div>
+          <div><dt>Wi-Fi</dt><dd>High-speed</dd></div>
+        </dl>
+
+        <div class="vhilites">
+          <div class="vhilites__h">Highlights</div>
+          <ul class="vhilites__list">
+            <li>Three ensuite bedrooms</li>
+            <li>Private pool with deck</li>
+            <li>Modern kitchen</li>
+            <li>Balcony &amp; sit-out</li>
+            <li>Premium bathrooms</li>
+            <li>Daily housekeeping</li>
+            <li>Smart entertainment</li>
+            <li>Dedicated parking</li>
+          </ul>
+        </div>
+
+        <div class="vctas">
+          <a href="#enquire" class="btn btn--primary">Enquire about Mandovi</a>
+          <a href="gallery.html" class="btn btn--ghost">View gallery</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VILLA SAL ===================== -->
+<section class="villa villa--reverse villa--terra" id="sal" data-screen-label="Villa · Sal">
+  <div class="wrap">
+    <div class="villa__panel">
+      <div class="vmedia" style="background-image:url('https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1600&q=80')">
+        <div class="vmedia__badge"><em>II.</em> Villa Sal</div>
+      </div>
+      <div class="vcontent">
+        <span class="vcontent__lbl">Villa II · Sal</span>
+        <h2>Villa <em>Sal</em></h2>
+        <p class="vcontent__sub">Modern three-bedroom luxury villa</p>
+        <p class="vcontent__desc">Refined living in a stylish three-bedroom villa — modern architecture, warm interiors and thoughtfully designed leisure spaces. The kind of place that draws you out into the evening long after you'd planned to head in.</p>
+
+        <dl class="vspecs">
+          <div><dt>Bedrooms</dt><dd>3 <em>ensuite</em></dd></div>
+          <div><dt>Sleeps</dt><dd>6 <em>+ 2</em></dd></div>
+          <div><dt>Pool</dt><dd>Private</dd></div>
+          <div><dt>Style</dt><dd>Modern</dd></div>
+        </dl>
+
+        <div class="vhilites">
+          <div class="vhilites__h">Highlights</div>
+          <ul class="vhilites__list">
+            <li>Private swimming pool</li>
+            <li>Spacious living room</li>
+            <li>Fully equipped kitchen</li>
+            <li>Elegant bedrooms</li>
+            <li>Outdoor seating</li>
+            <li>Air conditioning</li>
+            <li>Smart TV &amp; sound</li>
+            <li>Dedicated parking</li>
+          </ul>
+        </div>
+
+        <div class="vctas">
+          <a href="#enquire" class="btn btn--primary">Enquire about Sal</a>
+          <a href="gallery.html" class="btn btn--ghost">View gallery</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VILLA CHAPORA ===================== -->
+<section class="villa" id="chapora" data-screen-label="Villa · Chapora">
+  <div class="wrap">
+    <div class="villa__panel">
+      <div class="vmedia" style="background-image:url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=80')">
+        <div class="vmedia__badge"><em>III.</em> Villa Chapora</div>
+      </div>
+      <div class="vcontent">
+        <span class="vcontent__lbl">Villa III · Chapora</span>
+        <h2>Villa <em>Chapora</em></h2>
+        <p class="vcontent__sub">Premium holiday three-bedroom villa</p>
+        <p class="vcontent__desc">Located close to Goa's most-loved beaches, markets, restaurants and nightlife — Chapora offers the rare combination of accessibility and tranquility, with a family-friendly layout that works equally well for groups of friends.</p>
+
+        <dl class="vspecs">
+          <div><dt>Bedrooms</dt><dd>3 <em>ensuite</em></dd></div>
+          <div><dt>Sleeps</dt><dd>6 <em>+ 2</em></dd></div>
+          <div><dt>Pool</dt><dd>Private</dd></div>
+          <div><dt>Best for</dt><dd>Families</dd></div>
+        </dl>
+
+        <div class="vhilites">
+          <div class="vhilites__h">Highlights</div>
+          <ul class="vhilites__list">
+            <li>Prime Arpora location</li>
+            <li>Private pool &amp; lounge</li>
+            <li>Large dining space</li>
+            <li>Smart entertainment</li>
+            <li>Family-friendly layout</li>
+            <li>Concierge assistance</li>
+            <li>Daily housekeeping</li>
+            <li>Air conditioning</li>
+          </ul>
+        </div>
+
+        <div class="vctas">
+          <a href="#enquire" class="btn btn--primary">Enquire about Chapora</a>
+          <a href="gallery.html" class="btn btn--ghost">View gallery</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VILLA ZUARI ===================== -->
+<section class="villa villa--reverse villa--palm" id="zuari" data-screen-label="Villa · Zuari">
+  <div class="wrap">
+    <div class="villa__panel">
+      <div class="vmedia" style="background-image:url('https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=1600&q=80')">
+        <div class="vmedia__badge"><em>IV.</em> Villa Zuari</div>
+      </div>
+      <div class="vcontent">
+        <span class="vcontent__lbl">Villa IV · Zuari</span>
+        <h2>Villa <em>Zuari</em></h2>
+        <p class="vcontent__sub">Exclusive designer three-bedroom stay</p>
+        <p class="vcontent__desc">For guests who value sophistication, comfort and privacy above all — Zuari offers designer interiors, a fully serviced stay, and a secure, considered environment throughout. Carefully curated, quietly luxurious.</p>
+
+        <dl class="vspecs">
+          <div><dt>Bedrooms</dt><dd>3 <em>ensuite</em></dd></div>
+          <div><dt>Sleeps</dt><dd>6 <em>+ 2</em></dd></div>
+          <div><dt>Pool</dt><dd>Private</dd></div>
+          <div><dt>Tier</dt><dd>Designer</dd></div>
+        </dl>
+
+        <div class="vhilites">
+          <div class="vhilites__h">Highlights</div>
+          <ul class="vhilites__list">
+            <li>Designer interiors</li>
+            <li>Private pool</li>
+            <li>Spacious bedrooms</li>
+            <li>Fully serviced stay</li>
+            <li>Secure premises</li>
+            <li>High-speed Wi-Fi</li>
+            <li>Concierge on call</li>
+            <li>Ideal for groups</li>
+          </ul>
+        </div>
+
+        <div class="vctas">
+          <a href="#enquire" class="btn btn--primary">Enquire about Zuari</a>
+          <a href="gallery.html" class="btn btn--ghost">View gallery</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CLOSING / ENQUIRE ===================== -->
+<section id="enquire" data-screen-label="Villas · Enquire">
+  <div class="wrap">
+    <div class="closing">
+      <div class="closing__inner">
+        <div>
+          <span class="closing__num">Reservations</span>
+          <h2>Not sure which villa is yours? <em>We'll help.</em></h2>
+          <p>Tell us your dates, party size, and the kind of trip you have in mind. We'll come back personally with the right villa, a transparent quote, and any pre-arrival arrangements — transfers, chef, experiences — you'd like in place.</p>
+          <div class="closing__ctas">
+            <a href="index.html#book" class="btn btn--primary">Send an enquiry</a>
+            <a href="index.html#book" class="btn btn--ghost">WhatsApp us</a>
+          </div>
+        </div>
+        <dl class="closing__contacts">
+          <div class="row"><dt>Phone</dt><dd>+91 · XXXXX XXXXX</dd></div>
+          <div class="row"><dt>Email</dt><dd>stay@arporavillas.com</dd></div>
+          <div class="row"><dt>WhatsApp</dt><dd>+91 · XXXXX XXXXX</dd></div>
+          <div class="row"><dt>Instagram</dt><dd>@arpora.villas</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot__grid">
+      <div class="foot">
+        <div class="foot__brand-row">
+          <div class="foot__dot">A</div>
+          <div class="foot__name">Arpora Villas</div>
+        </div>
+        <p>Luxury private-pool villas and premium holiday homes in Arpora, Baga, North Goa.</p>
+      </div>
+      <div class="foot">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="villas.html">Our Villas</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="index.html#guest">Experience</a></li>
+        </ul>
+      </div>
+      <div class="foot">
+        <h4>Villas</h4>
+        <ul>
+          <li><a href="#mandovi">Villa Mandovi</a></li>
+          <li><a href="#sal">Villa Sal</a></li>
+          <li><a href="#chapora">Villa Chapora</a></li>
+          <li><a href="#zuari">Villa Zuari</a></li>
+        </ul>
+      </div>
+      <div class="foot">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>© MMXXVI · Arpora Villas</span>
+      <span>Arpora · Baga · North Goa</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

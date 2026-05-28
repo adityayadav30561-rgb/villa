@@ -1,0 +1,6 @@
+# Design tools (not needed for production)
+design-canvas.jsx
+tweaks-panel.jsx
+hero-options.html
+.design-canvas.state.json
+.tmp/

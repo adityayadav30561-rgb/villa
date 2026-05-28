@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gallery — Arpora Villas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:   #F5ECDB;
+    --cream-2: #EDE0C5;
+    --paper:   #FBF6EA;
+    --ink:     #221A14;
+    --muted:   #6B5E50;
+    --line:    #C9B58E;
+    --terra:   #B8553A;
+    --terra-2: #8E3E29;
+    --clay:    #D7A07C;
+    --palm:    #3F5A3D;
+    --palm-2:  #2A3D29;
+    --serif:   "Cormorant Garamond", Georgia, serif;
+    --sans:    "Outfit", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans); color: var(--ink);
+    background: var(--cream);
+    font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { width: min(1320px, calc(100% - 48px)); margin-inline: auto; }
+
+  /* ---------- nav (matches index) ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--cream);
+    border-bottom: 1px solid rgba(34,26,20,0.08);
+  }
+  .topbar__inner {
+    display: grid; grid-template-columns: auto 1fr auto;
+    align-items: center; gap: 32px;
+    padding: 18px 0;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand__dot {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--terra); color: var(--paper);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-style: normal;
+    font-size: 22px; line-height: 1;
+  }
+  .brand__name { font-weight: 600; font-size: 18px; letter-spacing: -0.005em; }
+  .brand__sub { font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted); margin-top: 1px; }
+  .nav { display: flex; gap: 30px; justify-content: center; }
+  .nav a {
+    font-size: 14px; font-weight: 500;
+    color: var(--ink);
+    position: relative; padding: 6px 0;
+  }
+  .nav a:hover { color: var(--terra); }
+  .nav a.is-active::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -2px;
+    height: 2px; background: var(--terra);
+  }
+  .topbar__cta {
+    background: var(--ink); color: var(--paper);
+    padding: 12px 22px; border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .topbar__cta::after {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: #6CC089;
+    box-shadow: 0 0 0 3px rgba(108,192,137,0.25);
+  }
+  .topbar__cta:hover { background: var(--terra); }
+
+  /* ---------- page header ---------- */
+  .phead { padding: 60px 0 36px; }
+  .phead__panel {
+    background: var(--ink); color: var(--paper);
+    border-radius: 28px;
+    padding: 48px 56px;
+    display: grid; grid-template-columns: 1.4fr 1fr;
+    gap: 56px; align-items: end;
+  }
+  .phead__num {
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 16px;
+    display: inline-flex; align-items: center; gap: 14px;
+  }
+  .phead__num::before { content: ""; width: 28px; height: 1px; background: var(--clay); }
+  .phead h1 {
+    font-family: var(--sans); font-weight: 600;
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 0.98; letter-spacing: -0.02em;
+    margin: 0; max-width: 16ch; text-wrap: balance;
+  }
+  .phead h1 em { font-family: var(--serif); font-style: normal; font-weight: 400; color: var(--clay); }
+  .phead__meta {
+    color: rgba(251,246,234,0.78);
+    font-size: 15px; line-height: 1.65;
+    max-width: 42ch;
+    margin: 0;
+    padding-bottom: 6px;
+  }
+  .phead__statrow {
+    display: flex; gap: 28px;
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(251,246,234,0.18);
+  }
+  .phead__stat .num {
+    font-family: var(--serif); font-style: normal;
+    color: var(--clay);
+    font-size: 26px; line-height: 1;
+  }
+  .phead__stat .lbl {
+    font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(251,246,234,0.6);
+    margin-top: 4px;
+  }
+
+  /* ---------- filter row ---------- */
+  .filters {
+    position: sticky; top: 67px; z-index: 40;
+    background: rgba(245,236,219,0.92);
+    backdrop-filter: blur(10px);
+    padding: 20px 0;
+    margin: 24px 0 0;
+    border-bottom: 1px solid rgba(34,26,20,0.08);
+  }
+  .filters__inner {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .chip {
+    padding: 10px 18px;
+    background: var(--paper);
+    border: 0;
+    border-radius: 999px;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 13px; font-weight: 500;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .chip:hover { background: var(--ink); color: var(--paper); }
+  .chip.is-active { background: var(--ink); color: var(--paper); }
+  .chip.is-active em {
+    font-family: var(--serif); font-style: normal; color: var(--clay); font-weight: 400;
+    margin-left: 6px;
+  }
+  .filters__count {
+    margin-left: auto;
+    font-family: var(--serif); font-style: normal;
+    color: var(--muted);
+    font-size: 20px;
+  }
+
+  /* ---------- grid (strict uniform) ---------- */
+  .grid {
+    padding: 32px 0 110px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .tile {
+    aspect-ratio: 1/1;
+    position: relative; overflow: hidden;
+    background: var(--cream-2);
+    border-radius: 20px;
+    cursor: zoom-in;
+  }
+  .tile img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease, filter .3s ease;
+    filter: brightness(0.98) saturate(1.02);
+  }
+  .tile:hover img { transform: scale(1.06); filter: brightness(1) saturate(1.08); }
+  .tile__badge {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(34,26,20,0.55);
+    backdrop-filter: blur(8px);
+    color: var(--paper);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity .25s, transform .25s;
+  }
+  .tile:hover .tile__badge { opacity: 1; transform: translateY(0); }
+  .tile__meta {
+    position: absolute; inset: auto 0 0 0;
+    padding: 22px 18px 16px;
+    background: linear-gradient(0deg, rgba(20,16,10,0.78), rgba(20,16,10,0));
+    color: var(--paper);
+    display: flex; align-items: end; justify-content: space-between; gap: 10px;
+    opacity: 0;
+    transition: opacity .25s;
+  }
+  .tile:hover .tile__meta { opacity: 1; }
+  .tile__meta strong {
+    font-family: var(--sans); font-weight: 600; font-size: 15px;
+    line-height: 1.1;
+  }
+  .tile__meta strong em {
+    font-family: var(--serif); font-style: normal; font-weight: 400;
+    color: var(--clay);
+    margin-right: 4px;
+  }
+  .tile__meta .villa {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(251,246,234,0.7);
+    white-space: nowrap;
+  }
+  .tile.is-hidden { display: none; }
+
+  /* ---------- closing prompt ---------- */
+  .closing {
+    background: var(--palm-2); color: var(--paper);
+    border-radius: 28px;
+    padding: 48px 56px;
+    margin: 40px 0 100px;
+    display: grid; grid-template-columns: 1.4fr 1fr;
+    align-items: center; gap: 56px;
+  }
+  .closing h2 {
+    font-family: var(--sans); font-weight: 600;
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.02; letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .closing h2 em { font-family: var(--serif); font-style: normal; font-weight: 400; color: var(--clay); }
+  .closing__ctas { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 24px;
+    border-radius: 999px;
+    font-size: 13px; font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .btn--primary { background: var(--clay); color: var(--ink); }
+  .btn--primary:hover { background: var(--paper); }
+  .btn--ghost { background: transparent; color: var(--paper); border-color: rgba(251,246,234,0.4); }
+  .btn--ghost:hover { border-color: var(--paper); }
+  .btn::after { content: "→"; }
+
+  /* ---------- footer (matches index) ---------- */
+  footer {
+    background: var(--ink); color: rgba(251,246,234,0.7);
+    padding: 70px 0 30px;
+  }
+  .foot__grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(251,246,234,0.12);
+  }
+  .foot__brand-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .foot__dot {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--terra); color: var(--paper);
+    display: grid; place-items: center;
+    font-family: var(--serif); font-style: normal;
+    font-size: 24px;
+  }
+  .foot__name { font-weight: 600; font-size: 22px; color: var(--paper); }
+  .foot p { max-width: 36ch; font-size: 14px; line-height: 1.6; }
+  .foot h4 {
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--clay); font-weight: 500;
+    margin: 6px 0 18px;
+  }
+  .foot ul { list-style: none; padding: 0; margin: 0; }
+  .foot ul li { margin-bottom: 10px; font-size: 14px; }
+  .foot ul a:hover { color: var(--clay); }
+  .foot__bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 24px;
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(251,246,234,0.45);
+  }
+
+  /* ---------- lightbox ---------- */
+  .lb {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(20,16,10,0.94);
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 32px;
+  }
+  .lb.is-open { display: flex; }
+  .lb__close {
+    position: absolute; top: 24px; right: 24px;
+    background: var(--paper); color: var(--ink);
+    border: 0;
+    width: 48px; height: 48px; border-radius: 50%;
+    font-size: 20px; cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .lb__close:hover { background: var(--terra); color: var(--paper); }
+  .lb__nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: var(--paper); color: var(--ink);
+    border: 0;
+    width: 56px; height: 56px; border-radius: 50%;
+    font-size: 18px; cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .lb__nav:hover { background: var(--terra); color: var(--paper); }
+  .lb__nav--prev { left: 28px; }
+  .lb__nav--next { right: 28px; }
+  .lb__stage {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 20px;
+    max-width: min(1320px, 92vw);
+    width: 100%;
+  }
+  .lb__imgwrap {
+    width: 100%;
+    max-height: 74vh;
+    display: grid; place-items: center;
+    background: var(--cream-2);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  .lb__img {
+    max-width: 100%; max-height: 74vh;
+    object-fit: contain;
+    display: block;
+  }
+  .lb__caption {
+    width: 100%;
+    background: var(--paper); color: var(--ink);
+    border-radius: 18px;
+    padding: 16px 22px;
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+  }
+  .lb__caption strong { font-weight: 600; font-size: 18px; letter-spacing: -0.005em; }
+  .lb__caption strong em { font-family: var(--serif); font-style: normal; font-weight: 400; color: var(--terra); margin-right: 6px; }
+  .lb__caption .villa { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+  .lb__counter {
+    font-family: var(--serif); font-style: normal;
+    color: var(--muted); font-size: 22px;
+  }
+  .lb__strip {
+    display: flex; gap: 8px;
+    overflow-x: auto;
+    width: 100%;
+    padding: 4px 2px 6px;
+    scrollbar-width: thin;
+  }
+  .lb__thumb {
+    width: 88px; height: 64px;
+    object-fit: cover;
+    border-radius: 10px;
+    opacity: 0.5;
+    cursor: pointer;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+    transition: opacity .2s, border-color .2s;
+  }
+  .lb__thumb:hover { opacity: 0.85; }
+  .lb__thumb.is-active { opacity: 1; border-color: var(--terra); }
+
+  @media (max-width: 1000px) {
+    .nav { display: none; }
+    .phead__panel, .closing { grid-template-columns: 1fr; gap: 28px; padding: 32px; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .foot__grid { grid-template-columns: 1fr 1fr; }
+    .lb__nav { width: 44px; height: 44px; }
+    .lb__nav--prev { left: 12px; }
+    .lb__nav--next { right: 12px; }
+  }
+</style>
+</head>
+<body data-screen-label="Gallery">
+
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <div class="brand">
+      <div class="brand__dot">A</div>
+      <div>
+        <div class="brand__name">Arpora Villas</div>
+        <div class="brand__sub">North Goa</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="villas.html">Villas</a>
+      <a href="gallery.html" class="is-active">Gallery</a>
+      <a href="index.html#guest">Experience</a>
+      <a href="index.html#book">Contact</a>
+    </nav>
+    <a href="index.html#book" class="topbar__cta">Book Now</a>
+  </div>
+</header>
+
+<section class="phead">
+  <div class="wrap">
+    <div class="phead__panel">
+      <div>
+        <span class="phead__num">06 · Gallery</span>
+        <h1>A walk through, <em>in pictures.</em></h1>
+        <div class="phead__statrow">
+          <div class="phead__stat"><div class="num">24</div><div class="lbl">Frames</div></div>
+          <div class="phead__stat"><div class="num">4</div><div class="lbl">Villas</div></div>
+          <div class="phead__stat"><div class="num">6</div><div class="lbl">Categories</div></div>
+        </div>
+      </div>
+      <p class="phead__meta">A curated selection from the four villas — pool decks, living rooms, bedrooms, kitchens, and the small Goan details that make each stay its own. Tap any image to open the lightbox; use ←/→ or the side controls to navigate.</p>
+    </div>
+  </div>
+</section>
+
+<div class="filters">
+  <div class="wrap filters__inner" id="filters">
+    <button class="chip is-active" data-filter="all">All</button>
+    <button class="chip" data-filter="pool">Pool</button>
+    <button class="chip" data-filter="interior">Interiors</button>
+    <button class="chip" data-filter="bedroom">Bedrooms</button>
+    <button class="chip" data-filter="dining">Dining &amp; Kitchen</button>
+    <button class="chip" data-filter="bath">Bath</button>
+    <button class="chip" data-filter="outdoor">Outdoor &amp; Goa</button>
+    <span class="filters__count" id="count">24 frames</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="grid" id="grid"></div>
+
+  <div class="closing">
+    <h2>Like what you see? <em>Let's pick your villa.</em></h2>
+    <div class="closing__ctas">
+      <a href="villas.html" class="btn btn--primary">View villas</a>
+      <a href="index.html#book" class="btn btn--ghost">Enquire</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot__grid">
+      <div class="foot">
+        <div class="foot__brand-row">
+          <div class="foot__dot">A</div>
+          <div class="foot__name">Arpora Villas</div>
+        </div>
+        <p>Luxury private-pool villas and premium holiday homes in Arpora, Baga, North Goa.</p>
+      </div>
+      <div class="foot">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="villas.html">Our Villas</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="index.html#guest">Experience</a></li>
+        </ul>
+      </div>
+      <div class="foot">
+        <h4>Villas</h4>
+        <ul>
+          <li><a href="villas.html#mandovi">Villa Mandovi</a></li>
+          <li><a href="villas.html#sal">Villa Sal</a></li>
+          <li><a href="villas.html#chapora">Villa Chapora</a></li>
+          <li><a href="villas.html#zuari">Villa Zuari</a></li>
+        </ul>
+      </div>
+      <div class="foot">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>© MMXXVI · Arpora Villas</span>
+      <span>Arpora · Baga · North Goa</span>
+    </div>
+  </div>
+</footer>
+
+<!-- lightbox -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image lightbox">
+  <button class="lb__close" id="lbClose" aria-label="Close">×</button>
+  <button class="lb__nav lb__nav--prev" id="lbPrev" aria-label="Previous">←</button>
+  <button class="lb__nav lb__nav--next" id="lbNext" aria-label="Next">→</button>
+  <div class="lb__stage">
+    <div class="lb__imgwrap">
+      <img class="lb__img" id="lbImg" alt="" />
+    </div>
+    <div class="lb__caption">
+      <strong id="lbCaption"></strong>
+      <span class="lb__counter" id="lbCounter">01 / 24</span>
+    </div>
+    <div class="lb__strip" id="lbStrip"></div>
+  </div>
+</div>
+
+<script>
+  const PHOTOS = [
+    { id: '1540541338287-41700207dee6', cat: 'pool',     label: 'Pool by night',          villa: 'Villa Mandovi' },
+    { id: '1582268611958-ebfd161ef9cf', cat: 'pool',     label: 'Pool aerial',            villa: 'Villa Sal'     },
+    { id: '1571055107559-3e67626fa8be', cat: 'bedroom',  label: 'Primary suite',          villa: 'Villa Zuari'   },
+    { id: '1600596542815-ffad4c1539a9', cat: 'interior', label: 'Living room',            villa: 'Villa Chapora' },
+    { id: '1591088398332-8a7791972843', cat: 'pool',     label: 'Pool deck',              villa: 'Villa Zuari'   },
+    { id: '1600210492486-724fe5c67fb0', cat: 'dining',   label: 'Dining',                 villa: 'Villa Mandovi' },
+    { id: '1631049307264-da0ec9d70304', cat: 'bedroom',  label: 'Bedroom · ensuite',      villa: 'Villa Sal'     },
+    { id: '1571003123894-1f0594d2b5d9', cat: 'outdoor',  label: 'Exterior',               villa: 'Villa Sal'     },
+    { id: '1582719508461-905c673771fd', cat: 'pool',     label: 'Sun loungers',           villa: 'Villa Chapora' },
+    { id: '1564013799919-ab600027ffc6', cat: 'bedroom',  label: 'Guest bedroom',          villa: 'Villa Mandovi' },
+    { id: '1552321554-5fefe8c9ef14',    cat: 'bath',     label: 'Bath',                   villa: 'Villa Zuari'   },
+    { id: '1512343879784-a960bf40e7f2', cat: 'outdoor',  label: 'Palms at dusk',          villa: 'Grounds'       },
+    { id: '1556909114-f6e7ad7d3136',    cat: 'dining',   label: 'Breakfast',              villa: 'Villa Sal'     },
+    { id: '1542314831-068cd1dbfeeb',    cat: 'outdoor',  label: 'Beach by night',         villa: 'Baga'          },
+    { id: '1610641818989-c2051b5e2cfd', cat: 'outdoor',  label: 'Palm leaves',            villa: 'Grounds'       },
+    { id: '1512100356356-de1b84283e18', cat: 'outdoor',  label: 'Goa coast',              villa: 'Goa'           },
+    { id: '1505693416388-ac5ce068fe85', cat: 'bedroom',  label: 'Bedroom · terra accent', villa: 'Villa Chapora' },
+    { id: '1604014237800-1c9102c219da', cat: 'interior', label: 'Lounge',                 villa: 'Villa Zuari'   },
+    { id: '1560448204-e02f11c3d0e2',    cat: 'bath',     label: 'Bath · stone',           villa: 'Villa Mandovi' },
+    { id: '1600607687939-ce8a6c25118c', cat: 'interior', label: 'Open living',            villa: 'Villa Sal'     },
+    { id: '1611892440504-42a792e24d32', cat: 'dining',   label: 'Kitchen',                villa: 'Villa Chapora' },
+    { id: '1505691938895-1758d7feb511', cat: 'pool',     label: 'Pool · afternoon',       villa: 'Villa Mandovi' },
+    { id: '1551776235-dde6d482980b',    cat: 'dining',   label: 'Marble counter',         villa: 'Villa Zuari'   },
+    { id: '1599619351208-3e6c839d6828', cat: 'outdoor',  label: 'Courtyard',              villa: 'Villa Chapora' },
+  ];
+
+  const URL = id => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1600&q=80`;
+  const THUMB = id => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=480&q=70`;
+
+  const grid = document.getElementById('grid');
+  PHOTOS.forEach((p, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+    tile.dataset.cat = p.cat;
+    tile.dataset.idx = i;
+    const roman = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI','XXII','XXIII','XXIV'][i];
+    tile.innerHTML = `
+      <img src="${THUMB(p.id)}" loading="lazy" alt="${p.label}" />
+      <div class="tile__badge">${p.cat}</div>
+      <div class="tile__meta">
+        <strong><em>${roman}.</em> ${p.label}</strong>
+        <span class="villa">${p.villa}</span>
+      </div>
+    `;
+    tile.addEventListener('click', () => openLB(i));
+    grid.appendChild(tile);
+  });
+
+  const filters = document.getElementById('filters');
+  const countEl = document.getElementById('count');
+  filters.addEventListener('click', e => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    filters.querySelectorAll('.chip').forEach(c => c.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    const f = btn.dataset.filter;
+    let visible = 0;
+    grid.querySelectorAll('.tile').forEach(t => {
+      const show = f === 'all' || t.dataset.cat === f;
+      t.classList.toggle('is-hidden', !show);
+      if (show) visible++;
+    });
+    countEl.textContent = visible + ' frame' + (visible === 1 ? '' : 's');
+  });
+
+  // ---------- lightbox ----------
+  const lb = document.getElementById('lb');
+  const lbImg = document.getElementById('lbImg');
+  const lbCaption = document.getElementById('lbCaption');
+  const lbCounter = document.getElementById('lbCounter');
+  const lbStrip = document.getElementById('lbStrip');
+  let current = 0;
+
+  PHOTOS.forEach((p, i) => {
+    const t = document.createElement('img');
+    t.className = 'lb__thumb';
+    t.src = THUMB(p.id);
+    t.alt = p.label;
+    t.addEventListener('click', () => showLB(i));
+    lbStrip.appendChild(t);
+  });
+
+  function showLB(i) {
+    current = (i + PHOTOS.length) % PHOTOS.length;
+    const p = PHOTOS[current];
+    const roman = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI','XXII','XXIII','XXIV'][current];
+    lbImg.src = URL(p.id);
+    lbImg.alt = p.label;
+    lbCaption.querySelector('strong').innerHTML = '<em>' + roman + '.</em> ' + p.label;
+    let villaEl = lbCaption.querySelector('.villa');
+    if (!villaEl) {
+      villaEl = document.createElement('span');
+      villaEl.className = 'villa';
+      lbCaption.insertBefore(villaEl, lbCaption.querySelector('.lb__counter'));
+    }
+    villaEl.textContent = p.villa;
+    lbCounter.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(PHOTOS.length).padStart(2, '0');
+    lbStrip.querySelectorAll('.lb__thumb').forEach((t, idx) => {
+      t.classList.toggle('is-active', idx === current);
+    });
+    const active = lbStrip.querySelector('.lb__thumb.is-active');
+    if (active) active.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+  }
+  function openLB(i) {
+    lb.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    showLB(i);
+  }
+  function closeLB() {
+    lb.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('lbClose').addEventListener('click', closeLB);
+  document.getElementById('lbPrev').addEventListener('click', () => showLB(current - 1));
+  document.getElementById('lbNext').addEventListener('click', () => showLB(current + 1));
+  lb.addEventListener('click', e => { if (e.target === lb) closeLB(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLB();
+    if (e.key === 'ArrowLeft') showLB(current - 1);
+    if (e.key === 'ArrowRight') showLB(current + 1);
+  });
+</script>
+</body>
+</html>

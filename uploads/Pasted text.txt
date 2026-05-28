@@ -1,0 +1,134 @@
+Phase 6 proxies work. Now redirect test.
+
+Bash Test legacy /spanbix redirects
+IN
+echo "===== 3) /spanbix/about redirect ====="; curl -s -o /dev/null -D - http://localhost:3000/spanbix/about | grep -iE "^HTTP|^location"
+echo; echo "--- /spanbix/blog/x ---"; curl -s -o /dev/null -D - http://localhost:3000/spanbix/blog/some-post | grep -iE "^HTTP|^location"
+echo; echo "--- bare /spanbix ---"; curl -s -o /dev/null -D - http://localhost:3000/spanbix | grep -iE "^HTTP|^location"
+
+OUT
+===== 3) /spanbix/about redirect =====
+HTTP/1.1 308 Permanent Redirect
+location: /about
+
+--- /spanbix/blog/x ---
+HTTP/1.1 308 Permanent Redirect
+location: /blog/some-post
+
+--- bare /spanbix ---
+HTTP/1.1 308 Permanent Redirect
+location:
+Redirects work, but bare /spanbix → empty location (should be /). Old LegacyRedirect had || '/' fallback. /:path* yields empty when path empty. Add explicit rule.
+
+Edit c:\Users\ay817\Documents\Codex\custombackend\spanbix-web\next.config.mjs
+Added 6 lines
+next.config change needs dev restart. Kill node, restart, re-verify bare /spanbix.
+
+PowerShell
+IN
+{
+  "command": "Stop-Process -Name node -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 600; Write-Output \"node killed\"",
+  "description": "Kill node to restart dev"
+}
+OUT
+node killed
+Bash Restart dev server
+IN
+cd "c:/Users/ay817/Documents/Codex/custombackend/spanbix-web"; rm -f "$TEMP/spanbix-dev.log"; npm run dev -- -p 3000 > "$TEMP/spanbix-dev.log" 2>&1 &
+echo "restarting"
+
+OUT
+Command running in background with ID: bdd2lakmr. Output is being written to: C:\Users\ay817\AppData\Local\Temp\claude\c--Users-ay817-Documents-Codex-custombackend\5354bb16-4fd4-4acc-892c-3a7e7b7838dc\tasks\bdd2lakmr.output. You will be notified when it completes. To check interim output, use Read on that file path.
+Bash Wait ready, retest bare /spanbix
+IN
+until grep -qE "Ready|Error|EADDRINUSE" "$TEMP/spanbix-dev.log" 2>/dev/null; do sleep 1; done; tail -3 "$TEMP/spanbix-dev.log"; echo "=== bare /spanbix ==="; curl -s -o /dev/null -D - http://localhost:3000/spanbix | grep -iE "^HTTP|^location"
+
+OUT
+- Environments: .env
+✓ Ready in 542ms
+
+=== bare /spanbix ===
+HTTP/1.1 308 Permanent Redirect
+location: /
+All verified. Kill all node per request.
+
+PowerShell
+IN
+{
+  "command": "$p = Get-Process node -ErrorAction SilentlyContinue; if ($p) { Stop-Process -Name node -Force -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 500; Write-Output \"killed $($p.Count) node procs\" } else { Write-Output \"no node procs\" }; $left = Get-Process node -ErrorAction SilentlyContinue; Write-Output \"remaining: $(@($left).Count)\"",
+  "description": "Kill all node, confirm none remain"
+}
+OUT
+killed 3 node procs
+remaining: 0
+Phase 6 done. All node killed (0 remaining). Stopping here per instructions.
+
+Files
+src/app/sitemap.xml/route.js — proxies backend /sitemap/spanbix.xml, ISR 300s
+src/app/robots.txt/route.js — proxies backend /robots/spanbix.txt, ISR 3600s, allow-all fallback
+next.config.mjs — redirects(): /spanbix → / and /spanbix/:path* → /:path* (308)
+Curl results
+/sitemap.xml → HTTP 200 application/xml, 3 <url> entries, blog URL + <lastmod> present ✓
+/robots.txt → HTTP 200 text/plain, full disallow list + Sitemap: pointer ✓
+/spanbix/about → 308 → /about ✓
+/spanbix/blog/some-post → 308 → /blog/some-post ✓
+bare /spanbix → 308 → / ✓ (needed the explicit rule; :path* yields empty dest)
+⚠️ Backend data bug exposed (NOT Phase 6 code — flagging only)
+Sitemap emits malformed URLs:
+
+
+<loc>https://https://spanbix.vercel.app//blog/sap-fico-...</loc>
+Sitemap: https://https://spanbix.vercel.app//sitemap.xml
+Cause: Website.domain stores https://spanbix.vercel.app/ (scheme + trailing slash baked in), and sitemapService.js:65 does https://${website.domain} → double scheme + double slash. Crawlers will reject these.
+
+Fix options (your call, outside Phase 6 scope):
+
+Data: set Spanbix Website.domain = spanbix.com (bare host, no scheme/slash), or
+Code: normalize in sitemapService.js — strip scheme + trailing slash before building baseUrl.
+Proxy faithfully serves whatever backend produces — once domain is fixed, sitemap/robots URLs correct automatically. Want me to fix the backend normalization?
+
+i will later add spanbix.com as my main domain, but also keep spanbix.vercel.app....because currently i am trying to optimise everything
+Right — bug is the double-scheme/double-slash, independent of which domain. Normalize website.domain so any stored form (spanbix.vercel.app, https://spanbix.vercel.app/, future spanbix.com) yields clean URLs. Fix in sitemapService.js (both baseUrl spots).
+
+Edit c:\Users\ay817\Documents\Codex\custombackend\src\services\sitemapService.js
+Added 13 lines
+Edit c:\Users\ay817\Documents\Codex\custombackend\src\services\sitemapService.js
+Modified
+Edit c:\Users\ay817\Documents\Codex\custombackend\src\services\sitemapService.js
+Modified
+Backend fix in. Render backend still serves old output until redeployed — verify the normalization logic locally (instant-exit node eval, no lingering proc).
+
+Bash Verify domain normalization for all forms
+IN
+node -e "const b=d=>'https://'+String(d||'').trim().replace(/^https?:\/\//i,'').replace(/\/+\$/,''); for(const d of ['https://spanbix.vercel.app/','spanbix.vercel.app','spanbix.com','https://spanbix.com/']) console.log(d.padEnd(28),'=>',b(d)+'/blog/x');"
+
+OUT
+https://spanbix.vercel.app/  => https://spanbix.vercel.app/blog/x
+spanbix.vercel.app           => https://spanbix.vercel.app/blog/x
+spanbix.com                  => https://spanbix.com/blog/x
+https://spanbix.com/         => https://spanbix.com/blog/x
+Normalization correct — all forms → clean https://<host>/blog/x. Confirm no lingering node.
+
+PowerShell
+IN
+{
+  "command": "$p = Get-Process node -ErrorAction SilentlyContinue; Write-Output \"node procs: $(@($p).Count)\"",
+  "description": "Confirm zero node procs"
+}
+OUT
+node procs: 0
+Done. 0 node procs.
+
+Backend fix — domain normalization
+sitemapService.js: added buildBaseUrl() helper, strips any scheme + trailing slash before prefixing https://. Applied to both generateSitemap + generateRobotsTxt.
+
+Handles every stored form → clean output (verified):
+
+https://spanbix.vercel.app/ → https://spanbix.vercel.app/blog/x
+spanbix.vercel.app → same
+spanbix.com / https://spanbix.com/ → https://spanbix.com/blog/x
+So whatever you set Website.domain to now (vercel) or later (spanbix.com), sitemap + robots URLs come out clean. No data edit needed — code is format-agnostic.
+
+Note: fix is local only. Render backend (mavro-dashboard.onrender.com) still serves malformed URLs until you redeploy. The spanbix-web proxy will auto-serve correct URLs once Render has this commit.
+
+Phase 6 complete + domain bug fixed. Stopped.
