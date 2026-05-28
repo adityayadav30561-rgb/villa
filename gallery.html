@@ -463,7 +463,7 @@
         <span class="phead__num">06 · Gallery</span>
         <h1>A walk through, <em>in pictures.</em></h1>
         <div class="phead__statrow">
-          <div class="phead__stat"><div class="num">24</div><div class="lbl">Frames</div></div>
+          <div class="phead__stat"><div class="num">18</div><div class="lbl">Frames</div></div>
           <div class="phead__stat"><div class="num">4</div><div class="lbl">Villas</div></div>
           <div class="phead__stat"><div class="num">6</div><div class="lbl">Categories</div></div>
         </div>
@@ -482,7 +482,7 @@
     <button class="chip" data-filter="dining">Dining &amp; Kitchen</button>
     <button class="chip" data-filter="bath">Bath</button>
     <button class="chip" data-filter="outdoor">Outdoor &amp; Goa</button>
-    <span class="filters__count" id="count">24 frames</span>
+    <span class="filters__count" id="count">18 frames</span>
   </div>
 </div>
 
@@ -561,34 +561,25 @@
 
 <script>
   const PHOTOS = [
-    { id: '1540541338287-41700207dee6', cat: 'pool',     label: 'Pool by night',          villa: 'Villa Mandovi' },
-    { id: '1582268611958-ebfd161ef9cf', cat: 'pool',     label: 'Pool aerial',            villa: 'Villa Sal'     },
-    { id: '1571055107559-3e67626fa8be', cat: 'bedroom',  label: 'Primary suite',          villa: 'Villa Zuari'   },
-    { id: '1600596542815-ffad4c1539a9', cat: 'interior', label: 'Living room',            villa: 'Villa Chapora' },
-    { id: '1591088398332-8a7791972843', cat: 'pool',     label: 'Pool deck',              villa: 'Villa Zuari'   },
-    { id: '1600210492486-724fe5c67fb0', cat: 'dining',   label: 'Dining',                 villa: 'Villa Mandovi' },
-    { id: '1631049307264-da0ec9d70304', cat: 'bedroom',  label: 'Bedroom · ensuite',      villa: 'Villa Sal'     },
-    { id: '1571003123894-1f0594d2b5d9', cat: 'outdoor',  label: 'Exterior',               villa: 'Villa Sal'     },
-    { id: '1582719508461-905c673771fd', cat: 'pool',     label: 'Sun loungers',           villa: 'Villa Chapora' },
-    { id: '1564013799919-ab600027ffc6', cat: 'bedroom',  label: 'Guest bedroom',          villa: 'Villa Mandovi' },
-    { id: '1552321554-5fefe8c9ef14',    cat: 'bath',     label: 'Bath',                   villa: 'Villa Zuari'   },
-    { id: '1512343879784-a960bf40e7f2', cat: 'outdoor',  label: 'Palms at dusk',          villa: 'Grounds'       },
-    { id: '1556909114-f6e7ad7d3136',    cat: 'dining',   label: 'Breakfast',              villa: 'Villa Sal'     },
-    { id: '1542314831-068cd1dbfeeb',    cat: 'outdoor',  label: 'Beach by night',         villa: 'Baga'          },
-    { id: '1610641818989-c2051b5e2cfd', cat: 'outdoor',  label: 'Palm leaves',            villa: 'Grounds'       },
-    { id: '1512100356356-de1b84283e18', cat: 'outdoor',  label: 'Goa coast',              villa: 'Goa'           },
-    { id: '1505693416388-ac5ce068fe85', cat: 'bedroom',  label: 'Bedroom · terra accent', villa: 'Villa Chapora' },
-    { id: '1604014237800-1c9102c219da', cat: 'interior', label: 'Lounge',                 villa: 'Villa Zuari'   },
-    { id: '1560448204-e02f11c3d0e2',    cat: 'bath',     label: 'Bath · stone',           villa: 'Villa Mandovi' },
-    { id: '1600607687939-ce8a6c25118c', cat: 'interior', label: 'Open living',            villa: 'Villa Sal'     },
-    { id: '1611892440504-42a792e24d32', cat: 'dining',   label: 'Kitchen',                villa: 'Villa Chapora' },
-    { id: '1505691938895-1758d7feb511', cat: 'pool',     label: 'Pool · afternoon',       villa: 'Villa Mandovi' },
-    { id: '1551776235-dde6d482980b',    cat: 'dining',   label: 'Marble counter',         villa: 'Villa Zuari'   },
-    { id: '1599619351208-3e6c839d6828', cat: 'outdoor',  label: 'Courtyard',              villa: 'Villa Chapora' },
+    { src: 'images/pool.jpg',            cat: 'pool',     label: 'Pool view',              villa: 'Villa Mandovi' },
+    { src: 'images/pool1.jpg',           cat: 'pool',     label: 'Pool deck',              villa: 'Villa Chapora' },
+    { src: 'images/bedroom.jpg',         cat: 'bedroom',  label: 'Primary suite',          villa: 'Villa Mandovi' },
+    { src: 'images/bedroom3.jpg',        cat: 'bedroom',  label: 'Bedroom suite',          villa: 'Villa Sal'     },
+    { src: 'images/bedroom4.jpg',        cat: 'bedroom',  label: 'Guest bedroom',          villa: 'Villa Chapora' },
+    { src: 'images/bedroom5.jpg',        cat: 'bedroom',  label: 'Bedroom · elegant',      villa: 'Villa Zuari'   },
+    { src: 'images/bedroom6.jpg',        cat: 'bedroom',  label: 'Master bedroom',         villa: 'Villa Mandovi' },
+    { src: 'images/hall.jpg',            cat: 'interior', label: 'Living room',            villa: 'Villa Mandovi' },
+    { src: 'images/dining room (1).jpg', cat: 'dining',   label: 'Dining area',            villa: 'Villa Mandovi' },
+    { src: 'images/dining room (2).jpg', cat: 'dining',   label: 'Dining · modern',        villa: 'Villa Sal'     },
+    { src: 'images/dining room (3).jpg', cat: 'dining',   label: 'Dining space',           villa: 'Villa Chapora' },
+    { src: 'images/kitchen (1).jpg',     cat: 'dining',   label: 'Kitchen',                villa: 'Villa Zuari'   },
+    { src: 'images/kitchen (2).jpg',     cat: 'dining',   label: 'Kitchen · modern',       villa: 'Villa Sal'     },
+    { src: 'images/bathroom (1).jpg',    cat: 'bath',     label: 'Bathroom',               villa: 'Villa Mandovi' },
+    { src: 'images/bathroom (2).jpg',    cat: 'bath',     label: 'Bath · ensuite',         villa: 'Villa Sal'     },
+    { src: 'images/bathroom (3).jpg',    cat: 'bath',     label: 'Bath · elegant',         villa: 'Villa Chapora' },
+    { src: 'images/bathroom (4).jpg',    cat: 'bath',     label: 'Bath · premium',         villa: 'Villa Zuari'   },
+    { src: 'images/hero-section.jpg',    cat: 'outdoor',  label: 'Villa exterior',         villa: 'Grounds'       },
   ];
-
-  const URL = id => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1600&q=80`;
-  const THUMB = id => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=480&q=70`;
 
   const grid = document.getElementById('grid');
   PHOTOS.forEach((p, i) => {
@@ -596,9 +587,9 @@
     tile.className = 'tile';
     tile.dataset.cat = p.cat;
     tile.dataset.idx = i;
-    const roman = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI','XXII','XXIII','XXIV'][i];
+    const roman = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII'][i];
     tile.innerHTML = `
-      <img src="${THUMB(p.id)}" loading="lazy" alt="${p.label}" />
+      <img src="${p.src}" loading="lazy" alt="${p.label}" />
       <div class="tile__badge">${p.cat}</div>
       <div class="tile__meta">
         <strong><em>${roman}.</em> ${p.label}</strong>
@@ -637,7 +628,7 @@
   PHOTOS.forEach((p, i) => {
     const t = document.createElement('img');
     t.className = 'lb__thumb';
-    t.src = THUMB(p.id);
+    t.src = p.src;
     t.alt = p.label;
     t.addEventListener('click', () => showLB(i));
     lbStrip.appendChild(t);
@@ -646,8 +637,8 @@
   function showLB(i) {
     current = (i + PHOTOS.length) % PHOTOS.length;
     const p = PHOTOS[current];
-    const roman = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI','XXII','XXIII','XXIV'][current];
-    lbImg.src = URL(p.id);
+    const roman = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII'][current];
+    lbImg.src = p.src;
     lbImg.alt = p.label;
     lbCaption.querySelector('strong').innerHTML = '<em>' + roman + '.</em> ' + p.label;
     let villaEl = lbCaption.querySelector('.villa');
