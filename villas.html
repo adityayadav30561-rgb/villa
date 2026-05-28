@@ -412,10 +412,24 @@
   .mobile-nav a.is-active { color: var(--terra); }
   .mobile-nav__cta { margin-top: 16px; background: var(--terra); color: var(--paper) !important; padding: 16px 32px !important; border-radius: 999px !important; font-size: 14px !important; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
 
+  /* ---------- mobile nav close button ---------- */
+  .mobile-nav__close {
+    position: absolute; top: 18px; right: 18px;
+    width: 48px; height: 48px;
+    background: none; border: 1px solid rgba(34,26,20,0.15);
+    border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 56; transition: background 0.2s, border-color 0.2s;
+  }
+  .mobile-nav__close:hover { background: var(--ink); border-color: var(--ink); }
+  .mobile-nav__close svg { width: 20px; height: 20px; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; transition: stroke 0.2s; }
+  .mobile-nav__close:hover svg { stroke: var(--paper); }
+
   @media (max-width: 1000px) {
     .nav { display: none; }
     .topbar__cta { display: none; }
-    .hamburger { display: block; }
+    .hamburger { display: block; justify-self: end; }
+    .topbar__inner { grid-template-columns: 1fr auto; }
     .phead__panel { grid-template-columns: 1fr; gap: 28px; padding: 36px; }
     .villa__panel { grid-template-columns: 1fr; min-height: auto; }
     .villa--reverse .villa__panel { grid-template-areas: "media" "content"; }
@@ -469,6 +483,9 @@
 </header>
 
 <nav class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav__close" id="menuClose" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" fill="none"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+  </button>
   <a href="index.html">Home</a>
   <a href="villas.html" class="is-active">Villas</a>
   <a href="gallery.html">Gallery</a>
@@ -733,17 +750,23 @@
 <script>
   var menuBtn = document.getElementById('menuBtn');
   var mobileNav = document.getElementById('mobileNav');
+  var menuClose = document.getElementById('menuClose');
+  function openMobileNav() {
+    menuBtn.classList.add('is-open');
+    mobileNav.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileNav() {
+    menuBtn.classList.remove('is-open');
+    mobileNav.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
   menuBtn.addEventListener('click', function() {
-    menuBtn.classList.toggle('is-open');
-    mobileNav.classList.toggle('is-open');
-    document.body.style.overflow = mobileNav.classList.contains('is-open') ? 'hidden' : '';
+    if (mobileNav.classList.contains('is-open')) { closeMobileNav(); } else { openMobileNav(); }
   });
+  menuClose.addEventListener('click', closeMobileNav);
   document.querySelectorAll('.mobile-nav-link').forEach(function(a) {
-    a.addEventListener('click', function() {
-      menuBtn.classList.remove('is-open');
-      mobileNav.classList.remove('is-open');
-      document.body.style.overflow = '';
-    });
+    a.addEventListener('click', closeMobileNav);
   });
 </script>
 
