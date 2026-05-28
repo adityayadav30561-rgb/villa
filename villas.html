@@ -390,8 +390,32 @@
     color: rgba(251,246,234,0.45);
   }
 
+  .hamburger {
+    display: none; background: none; border: none; cursor: pointer;
+    width: 44px; height: 44px; position: relative; z-index: 60; padding: 0;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px; background: var(--ink);
+    border-radius: 2px; margin: 5px auto; transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.is-open span:nth-child(2) { opacity: 0; }
+  .hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-nav {
+    position: fixed; inset: 0; z-index: 55; background: var(--cream);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .mobile-nav.is-open { opacity: 1; pointer-events: auto; }
+  .mobile-nav a { font-size: 22px; font-weight: 500; color: var(--ink); padding: 14px 24px; border-radius: 12px; transition: background 0.2s, color 0.2s; }
+  .mobile-nav a:hover { background: var(--ink); color: var(--paper); }
+  .mobile-nav a.is-active { color: var(--terra); }
+  .mobile-nav__cta { margin-top: 16px; background: var(--terra); color: var(--paper) !important; padding: 16px 32px !important; border-radius: 999px !important; font-size: 14px !important; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+
   @media (max-width: 1000px) {
     .nav { display: none; }
+    .topbar__cta { display: none; }
+    .hamburger { display: block; }
     .phead__panel { grid-template-columns: 1fr; gap: 28px; padding: 36px; }
     .villa__panel { grid-template-columns: 1fr; min-height: auto; }
     .villa--reverse .villa__panel { grid-template-areas: "media" "content"; }
@@ -401,6 +425,23 @@
     .closing { padding: 36px; }
     .closing__inner { grid-template-columns: 1fr; gap: 28px; }
     .foot__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .wrap { width: calc(100% - 32px); }
+    .phead__panel { padding: 28px 20px; }
+    .phead h1 { font-size: 32px; }
+    .vmedia { min-height: 260px; }
+    .vcontent { padding: 28px 20px; }
+    .vcontent h2 { font-size: 32px; }
+    .vspecs { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .vspecs > div { padding: 10px 12px; }
+    .vhilites__list { grid-template-columns: 1fr; }
+    .vctas { flex-direction: column; }
+    .vctas .btn { width: 100%; justify-content: center; }
+    .closing { padding: 28px 20px; border-radius: 24px; }
+    .closing h2 { font-size: 26px; }
+    .foot__grid { grid-template-columns: 1fr; gap: 32px; }
+    .foot__bottom { flex-direction: column; gap: 8px; text-align: center; }
   }
 </style>
 </head>
@@ -423,8 +464,18 @@
       <a href="index.html#book">Contact</a>
     </nav>
     <a href="#enquire" class="topbar__cta">Book Now</a>
+    <button class="hamburger" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="villas.html" class="is-active">Villas</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="index.html#guest">Experience</a>
+  <a href="index.html#book">Contact</a>
+  <a href="#enquire" class="mobile-nav__cta mobile-nav-link">Book Now</a>
+</nav>
 
 <section class="phead" data-screen-label="Villas · Header">
   <div class="wrap">
@@ -678,6 +729,23 @@
     </div>
   </div>
 </footer>
+
+<script>
+  var menuBtn = document.getElementById('menuBtn');
+  var mobileNav = document.getElementById('mobileNav');
+  menuBtn.addEventListener('click', function() {
+    menuBtn.classList.toggle('is-open');
+    mobileNav.classList.toggle('is-open');
+    document.body.style.overflow = mobileNav.classList.contains('is-open') ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mobile-nav-link').forEach(function(a) {
+    a.addEventListener('click', function() {
+      menuBtn.classList.remove('is-open');
+      mobileNav.classList.remove('is-open');
+      document.body.style.overflow = '';
+    });
+  });
+</script>
 
 </body>
 </html>

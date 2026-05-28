@@ -681,8 +681,57 @@
     color: rgba(251,246,234,0.45);
   }
 
+  /* ---------- hamburger button ---------- */
+  .hamburger {
+    display: none;
+    background: none; border: none; cursor: pointer;
+    width: 44px; height: 44px;
+    position: relative; z-index: 60;
+    padding: 0;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--ink); border-radius: 2px;
+    margin: 5px auto;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.is-open span:nth-child(2) { opacity: 0; }
+  .hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ---------- mobile nav overlay ---------- */
+  .mobile-nav {
+    position: fixed; inset: 0; z-index: 55;
+    background: var(--cream);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .mobile-nav.is-open { opacity: 1; pointer-events: auto; }
+  .mobile-nav a {
+    font-size: 22px; font-weight: 500;
+    color: var(--ink); padding: 14px 24px;
+    border-radius: 12px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .mobile-nav a:hover { background: var(--ink); color: var(--paper); }
+  .mobile-nav a.is-active { color: var(--terra); }
+  .mobile-nav__cta {
+    margin-top: 16px;
+    background: var(--terra); color: var(--paper) !important;
+    padding: 16px 32px !important;
+    border-radius: 999px !important;
+    font-size: 14px !important; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .mobile-nav__cta:hover { background: var(--terra-2) !important; }
+
   @media (max-width: 1000px) {
     .nav { display: none; }
+    .topbar__cta { display: none; }
+    .hamburger { display: block; }
     .book__panel { padding: 36px 28px; }
     .hero { height: auto; min-height: 0; padding-bottom: 32px; }
     .hero__corner, .hero__bottom { left: 28px; right: 28px; }
@@ -699,6 +748,44 @@
     section { padding: 70px 0; }
     .section-head { grid-template-columns: 1fr; gap: 20px; }
     .foot__grid { grid-template-columns: 1fr 1fr; }
+    .topbar__inner { grid-template-columns: auto 1fr auto; }
+  }
+
+  @media (max-width: 600px) {
+    .wrap { width: calc(100% - 32px); }
+    .hero__h1 { font-size: 36px; }
+    .hero__sub { font-size: 15px; }
+    .hero__center { padding: 80px 16px 60px; }
+    .hero__corner { top: 16px; left: 16px; right: 16px; font-size: 9px; }
+    .hero__bottom { padding: 0 16px; }
+    .hero__cta-row { flex-direction: column; width: 100%; }
+    .hero__cta-row .btn { width: 100%; justify-content: center; }
+    .section-title { font-size: 32px; }
+    section { padding: 48px 0; }
+    .section-head { margin-bottom: 32px; }
+    .panel { padding: 28px 24px; border-radius: 20px; }
+    .panel h3 { font-size: 24px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .about__big-img { min-height: 280px; border-radius: 20px; }
+    .b--photo { aspect-ratio: 16/10; }
+    .b--head { padding: 24px; }
+    .b-head__main h3 { font-size: 24px; }
+    .b--info { padding: 24px; }
+    .b--info h4 { font-size: 18px; }
+    .occasions-row { padding: 16px 20px; gap: 14px; flex-direction: column; align-items: flex-start; }
+    .occasions-row strong { font-size: 18px; }
+    .vcard__body { padding: 20px 24px 24px; }
+    .vcard h3 { font-size: 24px; }
+    .gcard { padding: 28px 24px 24px; border-radius: 20px; }
+    .gcard__num { font-size: 56px; }
+    .gcard p { font-size: 20px; }
+    .book__panel { padding: 28px 20px; border-radius: 24px; }
+    .book-form { padding: 28px 24px 24px; border-radius: 20px; }
+    .book-form h3 { font-size: 22px; }
+    .field-row { grid-template-columns: 1fr; }
+    .foot__grid { grid-template-columns: 1fr; gap: 32px; }
+    .foot__bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .strip__inner { font-size: 16px; }
   }
 </style>
 </head>
@@ -721,8 +808,20 @@
       <a href="#book">Contact</a>
     </nav>
     <a href="#book" class="topbar__cta">Book Now</a>
+    <button class="hamburger" id="menuBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html" class="is-active">Home</a>
+  <a href="villas.html">Villas</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="#guest" class="mobile-nav-link">Experience</a>
+  <a href="#book" class="mobile-nav-link">Contact</a>
+  <a href="#book" class="mobile-nav__cta mobile-nav-link">Book Now</a>
+</nav>
 
 <!-- ===================== HERO · cinematic full-bleed ===================== -->
 <section class="hero" data-screen-label="Home · Hero">
@@ -1101,8 +1200,24 @@
   </div>
 </footer>
 
-<!-- ===================== SMOOTH SCROLL ===================== -->
+<!-- ===================== SCRIPTS ===================== -->
 <script>
+  // Hamburger menu toggle
+  var menuBtn = document.getElementById('menuBtn');
+  var mobileNav = document.getElementById('mobileNav');
+  menuBtn.addEventListener('click', function() {
+    menuBtn.classList.toggle('is-open');
+    mobileNav.classList.toggle('is-open');
+    document.body.style.overflow = mobileNav.classList.contains('is-open') ? 'hidden' : '';
+  });
+  // Close mobile nav on link click
+  document.querySelectorAll('.mobile-nav-link').forEach(function(a) {
+    a.addEventListener('click', function() {
+      menuBtn.classList.remove('is-open');
+      mobileNav.classList.remove('is-open');
+      document.body.style.overflow = '';
+    });
+  });
   // Smooth scroll for anchor links
   document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     a.addEventListener('click', function(e) {
